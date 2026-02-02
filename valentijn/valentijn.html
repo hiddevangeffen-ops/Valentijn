@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>💖 Valentijn?</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #ffe6ee;
+  text-align: center;
+  padding-top: 40px;
+  overflow: hidden;
+  margin: 0;
+  height: 100vh;
+  position: relative;
+}
+
+#teddy {
+  width: 300px; /* beer groter */
+  z-index: 10;
+  position: relative;
+}
+
+button {
+  font-size: 20px;
+  padding: 12px 25px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.yes {
+  background-color: #ff4d6d;
+  color: white;
+}
+
+.no {
+  background-color: #adb5bd;
+  color: white;
+}
+
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 24px;
+  animation: floatUp 6s linear forwards;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Teddybeer met transparante achtergrond -->
+<img id="teddy" src="https://www.clipartmax.com/png/middle/64-649716_download-teddy-bear-on-a-heart.png" alt="Teddybeer met hart">
+
+<h1>Wil jij mijn valentijn zijn? 💘</h1>
+
+<div id="buttons">
+  <button class="yes" onclick="yesClicked()">Ja</button>
+  <button class="no" onclick="noClicked()">Nee</button>
+</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/02/15/audio_1f3dfe5d1a.mp3?filename=romantic-love-melody-11242.mp3" type="audio/mpeg">
+  Je browser ondersteunt audio niet.
+</audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+function noClicked() {
+  const buttonsDiv = document.getElementById("buttons");
+  
+  // Verberg bestaande knoppen (optioneel)
+  // buttonsDiv.innerHTML = "";
+
+  const newBtn = document.createElement("button");
+  newBtn.innerText = "Ja";
+  newBtn.className = "yes";
+  
+  // willekeurige positie over scherm
+  newBtn.style.position = "absolute";
+  newBtn.style.left = Math.random() * (window.innerWidth - 120) + "px"; // rekening houdend met knop breedte
+  newBtn.style.top = Math.random() * (window.innerHeight - 50) + "px"; // rekening houdend met knop hoogte
+  newBtn.onclick = yesClicked;
+  
+  document.body.appendChild(newBtn);
+}
+
+function yesClicked() {
+  // muziek starten
+  const audio = document.getElementById("music");
+  if(audio){ audio.play().catch(e=>console.log("Klik nodig om muziek te starten")); }
+
+  // confetti bij Ja
+  if(typeof confetti === "function"){
+    confetti({ particleCount: 300, spread: 160, origin: { y: 0.6 } });
+  }
+
+  // hartjes pas na klik
+  setInterval(createHeart, 100);
+  setInterval(createHeart, 150);
+  setInterval(createHeart, 200);
+
+  document.body.innerHTML =
+    "<h1>💖 Hoppatee 💖</h1><p style='font-size:24px;'>Hidde is blij, zie je 14 feb.</p>";
+
+  // zorg dat audio blijft spelen na innerHTML
+  document.body.appendChild(audio);
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (15 + Math.random() * 40) + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(), 6000);
+}
+</script>
+
+</body>
+</html>
